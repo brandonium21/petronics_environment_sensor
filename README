@@ -23,8 +23,8 @@ should return 0x68
 
 install Python support
 >> sudo apt-get install python-smbus
->> sudo pip install mpu6050-raspberrypi
+>> sudo pip3 install mpu6050-raspberrypi
 
 run test script
->> python test_mpu6050.py
+>> python3 test_mpu6050.py
 
