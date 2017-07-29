@@ -10,61 +10,65 @@ from multiprocessing import Process, Value
 
 # Variables
 store_file = "results.csv"
-store_path = ""
+store_path = "/media/pi/983F-EB83"
 storage_location = "{}/{}".format(store_path, store_file)
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 #Setup GPIO
-red_pin = 18
-green_pin = 23
-blue_pin = 24
+red_pin = 2
+green_pin = 3
+blue_pin = 4
 GPIO.setup(red_pin, GPIO.OUT)
 GPIO.setup(green_pin, GPIO.OUT)
 GPIO.setup(blue_pin, GPIO.OUT)
-GPIO.output(red_pin, False)
-GPIO.output(green_pin, False)
-GPIO.output(blue_pin, False)
+GPIO.output(red_pin, True)
+GPIO.output(green_pin, True)
+GPIO.output(blue_pin, True)
 
 # Store Data
 def StoreData(temp, hum):
     timestamp = datetime.datetime.now()
     if os.path.isfile(storage_location):
-        with open(storage_location, 'w', newline='') as f:
+        with open(storage_location, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow((timestamp, temp, hum))
     else:
         with open(storage_location, 'w', newline='') as f:
+            writer = csv.writer(f)
             writer.writerow(('Timestamp', 'Temperature', 'Humidity'))
 
 def UpdateLed(temperature):
+    GPIO.setmode(GPIO.BCM)
     # if temp high; led = Red
     if temperature >= 35.0:
-        GPIO.output(red_pin, True)
-        GPIO.output(green_pin, False)
-        GPIO.output(blue_pin, False)
+        GPIO.output(red_pin, False)
+        GPIO.output(green_pin, True)
+        GPIO.output(blue_pin, True)
 
     # if temp low; led = Blue
     elif temperature <= 20.0:
-        GPIO.output(red_pin, False)
-        GPIO.output(green_pin, False)
-        GPIO.output(blue_pin, True)
+        GPIO.output(red_pin, True)
+        GPIO.output(green_pin, True)
+        GPIO.output(blue_pin, False)
 
     # if temp just right; led = Green
     else:
-        GPIO.output(red_pin, False)
-        GPIO.output(green_pin, True)
-        GPIO.output(blue_pin, False)
+        GPIO.output(red_pin, True)
+        GPIO.output(green_pin, False)
+        GPIO.output(blue_pin, True)
 
 
 # Get Temp and humidity
 def GetData(start):
     while True:
-    	if loop_on.value == True:
+    	if start.value == True:
         	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
-        	UpdateLed(float(temperature))
-        	StoreData(temperature, humidity)
-        	#print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
+        	if humidity and temperature:
+                    StoreData(temperature, humidity)
+                    UpdateLed(float(temperature))
+                    print ('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity))
 
 
 # Serve dashboard website 
