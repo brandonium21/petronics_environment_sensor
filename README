@@ -1,0 +1,30 @@
+README 
+
+integrating MPU6050
+08/17/2017
+davidjun
+
+connect the CJMCU-861 breakout module to the Pi:
+ - Vcc to 5V
+ - Gnd to Gnd
+ - SDA to SDA (pin 3)
+ - SCL to SCL (pin 5)
+ - AD0 to Gnd
+
+add pull ups if required (not required for the CJMCU-861)
+
+scan i2c bus for device (1 for rev 2 Pis, 0 for rev 1 Pi)
+should see 0x68 because we set AD0 to gnd
+>> sudo i2cdetect -y 1
+
+ping the IMU with a WHO AM I
+should return 0x68
+>> sudo i2cget -y 1 0x68 0x75
+
+install Python support
+>> sudo apt-get install python-smbus
+>> sudo pip install mpu6050-raspberrypi
+
+run test script
+>> python test_mpu6050.py
+
