@@ -12,6 +12,8 @@ store_file = "results.csv"
 store_path = ""
 storage_location = "{}/{}".format(store_path, store_file)
 
+GPIO.setmode(GPIO.BCM)
+
 #Setup GPIO
 red_pin = 18
 green_pin = 23
