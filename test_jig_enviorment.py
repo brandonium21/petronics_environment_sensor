@@ -56,12 +56,12 @@ def UpdateLed(temperature):
 
 # Get Temp and humidity
 def GetData(start):
-while True:
-	if loop_on.value == True:
-    	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
-    	UpdateLed(float(temperature))
-    	StoreData(temperature, humidity)
-    	#print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
+    while True:
+    	if loop_on.value == True:
+        	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
+        	UpdateLed(float(temperature))
+        	StoreData(temperature, humidity)
+        	#print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
 
 
 # Serve dashboard website 
