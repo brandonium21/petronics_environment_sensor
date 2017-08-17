@@ -6,6 +6,7 @@ import os
 import Adafruit_DHT
 import RPi.GPIO as GPIO
 from flask import Flask
+from multiprocessing import Process, Value
 
 # Variables
 store_file = "results.csv"
