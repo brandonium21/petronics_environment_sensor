@@ -71,13 +71,11 @@ app = Flask(__name__)
 def hello_world():
 	try:
 		with open(storage_location) as f:
-	    	reader = csv.DictReader(f)
-			for row in reader:
-				pass
+            reader = csv.DictReader(f)
+                for row in reader:
+				    pass
 	except:
 		return "Could not retrieve data"
-    return 'Hello, World!'
-
 
 # Run data collection and website side-by-side
 if __name__ == "__main__":
