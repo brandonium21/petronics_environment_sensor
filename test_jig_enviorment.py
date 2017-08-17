@@ -58,7 +58,7 @@ def UpdateLed(temperature):
 def GetData(start):
 while True:
 	if loop_on.value == True:
-    	humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+    	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
     	UpdateLed(float(temperature))
     	StoreData(temperature, humidity)
     	#print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
@@ -73,6 +73,7 @@ def hello_world():
 		with open(storage_location) as f:
 	    	reader = csv.DictReader(f)
 			for row in reader:
+				pass
 	except:
 		return "Could not retrieve data"
     return 'Hello, World!'
