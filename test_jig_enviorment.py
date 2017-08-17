@@ -77,7 +77,7 @@ def hello_world():
 				    pass
 	except:
         '''
-	return "Could not retrieve data"
+    return "Could not retrieve data"
 
 # Run data collection and website side-by-side
 if __name__ == "__main__":
