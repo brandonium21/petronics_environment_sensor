@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/5a4d80cb7e.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+</head>
+<style>
+.data-head {
+    margin-right: 20px;
+}
+
+.li-inside {
+    margin: 0px;
+}
+
+.data-chart {
+    margin-top: 10px;
+}
+</style>
+
+<body>
+    <nav class="navbar navbar-light bg-faded">
+        <h1 class="navbar-brand mb-0">Dashboard</h1>
+    </nav>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <h5>Factory Environment</h5>
+                
+                <ul class="list-group">
+                    <li class="list-group-item justify-content-between">
+                        {Node Name}
+                        <span class="badge badge-success badge-pill"> </span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        {Node Name}
+                        <span class="badge badge-success badge-pill"> </span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        {Node Name}
+                        <span class="badge badge-danger badge-pill"> </span>
+                    </li>
+                </ul>
+                <br>
+                <!-- Test Jigs -->
+                <h5>Test Jig</h5>
+                
+                <ul class="list-group">
+                    <li class="list-group-item justify-content-between">
+                        {Jig Name}
+                        <span class="badge badge-success badge-pill"> </span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        {Jig Name}
+                        <span class="badge badge-success badge-pill"> </span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        {Jig Name}
+                        <span class="badge badge-danger badge-pill"> </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <!-- Factory sensor Node -->
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">
+                              Node: {Node Name}
+                              <span class="badge badge-success float-right">UP</span>
+                            </h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Location: {Node Location}</h6>
+                                <!--<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapsedata" aria-expanded="false" aria-controls="collapsedata">
+                                    Data
+                                </button>
+                              -->
+                                <canvas class="data-chart" id="myChart" width="auto" height="80px"></canvas>
+                                <p class="card-text">
+                                    <!-- <div class="collapse" id="collapsedata"> -->
+                                    <div>
+                                        <!--
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>Current Data</p>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-link pull-right" type="button">
+                                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                      -->
+                                        <ul class="list-group">
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">Temperature:</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">Humidity:</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">AccX:</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">AccY:</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">AccZ:</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                            <li class="list-group-item justify-content-between">
+                                                <span>
+                                            <span class="badge badge-default data-head">Temperature(sensor):</span> 0.00
+                                                </span>
+                                                <span>
+                                              {Timestamp}
+                                            </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var data = {
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        datasets: [{
+                label: "Temperature",
+                borderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                data: [25, 29, 22, 28, 41, 31, 32, 47, 48, 44],
+                fill: false
+            },
+            {
+                label: "Humidity",
+                borderColor: "rgba(66, 244, 66, 1)",
+                pointBackgroundColor: "rgba(66, 244, 66, 1)",
+                data: [86, 76, 24, 82, 79, 36, 30, 89, 28, 90],
+                fill: false
+            },
+            {
+                label: "Sensor Temp",
+                borderColor: "rgba(244, 65, 83, 1)",
+                pointBackgroundColor: "rgba(244, 65, 83, 1)",
+                data: [32, 45, 21, 35, 33, 24, 34, 20, 20, 35],
+                fill: false
+            },
+            {
+                label: "AccX",
+                borderColor: "rgba(238, 244, 65, 1)",
+                pointBackgroundColor: "rgba(238, 244, 65, 1)",
+                data: [8, 7, 6, 10, 2, 8, 6, 10, 1, 4],
+                fill: false
+            },
+            {
+                label: "AccZ",
+                borderColor: "rgba(238, 65, 244, 1)",
+                pointBackgroundColor: "rgba(238, 65, 244, 1)",
+                data: [6, 4, 5, 8, 6, 8, 10, 7, 7, 6],
+                fill: false
+            },
+            {
+                label: "AccY",
+                borderColor: "rgba(66, 134, 244, 1)",
+                pointBackgroundColor: "rgba(66, 134, 244, 1)",
+                data: [8, 8, 5, 8, 4, 2, 9, 7, 5, 5],
+                fill: false
+            }
+
+        ]
+    };
+    var options = {};
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+    </script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import time
 import uuid
 import datetime
-
+import json
 def customCallback(client, userdata, message):
 	print("Received a new message: ")
 	print(message.payload)
@@ -18,18 +18,18 @@ myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Cer
 	"mqtt_res2/factory_sensor.private.key", 
 	"mqtt_res2/factory_sensor.cert.pem")
 
-
+'''
 # AWSIoTMQTTClient connection configuration
 myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myMQTTClient.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
 myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
 myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
-
+'''
 myMQTTClient.connect()
-data_scheme = {
+data_scheme = json.dumps({
 	"point": str(uuid.uuid4()),
-	"timestamp": datetime.datetime.now(),
+	"timestamp": str(datetime.datetime.now()),
 	"data": {
 		"environmental":{
 			"temperature": 0.0,
@@ -44,8 +44,8 @@ data_scheme = {
 			"timestamp": ''
 		}
 	}
-}
-myMQTTClient.subscribe('factoryIot', 1, customCallback)
-myMQTTClient.publish("factoryIot", str(data_scheme), 1)
-
+})
+#myMQTTClient.subscribe('factoryiot', 1, customCallback)
+print myMQTTClient.publish("factoryiot", data_scheme, 1)
 time.sleep(2)
+myMQTTClient.disconnect()
