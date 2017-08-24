@@ -4,6 +4,8 @@ import time
 import uuid
 import datetime
 import json
+from random import randint
+
 def customCallback(client, userdata, message):
 	print("Received a new message: ")
 	print(message.payload)
@@ -27,25 +29,19 @@ myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 '''
 myMQTTClient.connect()
+node = str(uuid.uuid4())
+timestamp = str(datetime.datetime.now())
 data_scheme = json.dumps({
-	"point": str(uuid.uuid4()),
-	"timestamp": str(datetime.datetime.now()),
-	"data": {
-		"environmental":{
-			"temperature": 0.0,
-			"humidity": 0.0,
-			"timestamp": ''
-		},
-		"accelerometer":{
-			"accx": 0.0,
-			"accy": 0.0,
-			"accz": 0.0,
-			"temperature": 0.0,
-			"timestamp": ''
-		}
+		"temperature": {"value": randint(30, 60), "node": node, "timestamp": timestamp},
+		"humidity": {"value": randint(20, 90), "node": node, "timestamp": timestamp},
+		"accx": {"value": randint(1, 10), "node": node, "timestamp": timestamp},
+		"accy": {"value": randint(1, 10), "node": node, "timestamp": timestamp},
+		"accz": {"value": randint(1, 10), "node": node, "timestamp": timestamp},
+		"sensorTemp": {"value": randint(20, 90), "node": node, "timestamp": timestamp},
 	}
-})
-#myMQTTClient.subscribe('factoryiot', 1, customCallback)
+)
+#print(data_scheme)
+myMQTTClient.subscribe('factoryiot', 1, customCallback)
 print myMQTTClient.publish("factoryiot", data_scheme, 1)
 time.sleep(2)
 myMQTTClient.disconnect()
