@@ -53,7 +53,7 @@ def StoreData(data):
 # Get Temp and humidity
 def GetData(start):
     while True:
-    	if start.value == True:
+        if start.value == True:
         	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
         	if humidity and temperature:
                 timestamp = datetime.datetime.now()
