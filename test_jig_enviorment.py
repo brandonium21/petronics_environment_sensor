@@ -30,19 +30,22 @@ iot_topic = "factory-node/{}".format(node)
 host = "a1la3qkft0cvmg.iot.us-east-2.amazonaws.com"
 myMQTTClient = AWSIoTMQTTClient("factory_sensor")
 myMQTTClient.configureEndpoint(host, 8883)
-myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt", 
-    "mqtt_res2/factory_sensor.private.key", 
-    "mqtt_res2/factory_sensor.cert.pem")
+myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt",
+                                  "mqtt_res2/factory_sensor.private.key",
+                                  "mqtt_res2/factory_sensor.cert.pem")
 
 # AWSIoTMQTTClient connection configuration
 myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
-myMQTTClient.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
+# Infinite offline Publish queueing
+myMQTTClient.configureOfflinePublishQueueing(-1)
 myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
 myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 myMQTTClient.connect()
 
 # Store Data
+
+
 def StoreData(data):
     if os.path.isfile(storage_location):
         with open(storage_location, 'a', newline='') as f:
@@ -50,7 +53,9 @@ def StoreData(data):
     else:
         with open(storage_location, 'w', newline='') as f:
 
-# Get Temp and humidity
+            # Get Temp and humidity
+
+
 def GetData(start):
     while True:
         if start.value == True:
@@ -69,15 +74,18 @@ def GetData(start):
                     pass
 
                 StoreData(data_scheme)
-                print ('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity))
+                print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
+                    temperature, humidity))
 
 # Get IMU data
+
+
 def GetIMU(start):
     while True:
         if start.value == True:
             acc_data = sensor.get_accel_data()
             acc_temp = sensor.get_temp()
-            if acc_data and  acc_temp:
+            if acc_data and acc_temp:
                 timestamp = datetime.datetime.now()
                 data_scheme = json.dumps({
                     "accx": {"value": acc_data['x'], "node": node, "timestamp": timestamp},
@@ -92,14 +100,15 @@ def GetIMU(start):
                     print("There was a publish error IMU")
                     pass
                 StoreData(data_scheme)
-                print ('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(acc_data['x'], acc_data['y'], acc_data['z']))
+                print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
+                    acc_data['x'], acc_data['y'], acc_data['z']))
 
 # Run data collection and website side-by-side
 if __name__ == "__main__":
-   start = Value('b', True)
-   p = Process(target=GetData, args=(start,))
-   p.start()  
-   q = Process(target=GetIMU, args=(start,))
-   q.start()  
-   p.join()
-   q.join()
+    start = Value('b', True)
+    p = Process(target=GetData, args=(start,))
+    p.start()
+    q = Process(target=GetIMU, args=(start,))
+    q.start()
+    p.join()
+    q.join()
