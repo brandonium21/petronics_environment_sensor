@@ -48,7 +48,6 @@ myMQTTClient.connect()
 
 
 def StoreData(data):
-    connectAWS()
     try:
         print(myMQTTClient.publish(
             iot_topic, json.dumps(data), 1))
