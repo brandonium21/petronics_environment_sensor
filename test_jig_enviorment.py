@@ -47,6 +47,7 @@ myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 def run(cmdline):
     subprocess.Popen(cmdline.split(' '), stdout=sys.stdout)
+    subprocess.Popen(cmdline.split(' '), stdout=sys.stdout)
 
 def signal_handler(signal, frame):
         print('You pressed Ctrl+C!')
