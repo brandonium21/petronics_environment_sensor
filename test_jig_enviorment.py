@@ -54,8 +54,8 @@ def StoreData(data):
 def GetData(start):
     while True:
         if start.value == True:
-        	humidity, temperature = Adafruit_DHT.read_retry(11, 22)
-        	if humidity and temperature:
+            humidity, temperature = Adafruit_DHT.read_retry(11, 22)
+            if humidity and temperature:
                 timestamp = datetime.datetime.now()
                 data_scheme = json.dumps({
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
