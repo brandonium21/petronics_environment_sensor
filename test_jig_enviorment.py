@@ -29,22 +29,20 @@ iot_topic = "factory-node/{}".format(node)
 
 host = "a1la3qkft0cvmg.iot.us-east-2.amazonaws.com"
 
+myMQTTClient = AWSIoTMQTTClient("factory_sensor_zero")
+myMQTTClient.configureEndpoint(host, 8883)
+myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt",
+                                  "mqtt_res2/factory_sensor.private.key",
+                                  "mqtt_res2/factory_sensor.cert.pem")
 
-def connectAWS():
-    myMQTTClient = AWSIoTMQTTClient("factory_sensor")
-    myMQTTClient.configureEndpoint(host, 8883)
-    myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt",
-                                      "mqtt_res2/factory_sensor.private.key",
-                                      "mqtt_res2/factory_sensor.cert.pem")
-
-    # AWSIoTMQTTClient connection configuration
-    myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
-    # Infinite offline Publish queueing
-    myMQTTClient.configureOfflinePublishQueueing(-1)
-    myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
-    myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
-    myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
-    myMQTTClient.connect()
+# AWSIoTMQTTClient connection configuration
+myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
+# Infinite offline Publish queueing
+myMQTTClient.configureOfflinePublishQueueing(-1)
+myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
+myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
+myMQTTClient.connect()
 
 # Store Data
 
