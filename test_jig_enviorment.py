@@ -49,7 +49,7 @@ myMQTTClient.connect()
 def StoreData(data):
     if os.path.isfile(storage_location):
         with open(storage_location, 'a') as f:
-            json.dump(json.load(data), f)
+            json.dump(data, f)
     else:
         with open(storage_location, 'w') as f:
             print("blah")
