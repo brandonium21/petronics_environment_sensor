@@ -63,12 +63,12 @@ def GetData(start):
             humidity, temperature = Adafruit_DHT.read_retry(11, 22)
             if humidity and temperature:
                 timestamp = str(datetime.datetime.now())
-                data_scheme = json.dumps({
+                data_scheme = {
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
-                })
+                }
                 try:
-                    myMQTTClient.publish(iot_topic, data_scheme, 1)
+                    myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1)
                 except:
                     #raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
                     print("There was a publish error HDT")
@@ -88,14 +88,14 @@ def GetIMU(start):
             acc_temp = sensor.get_temp()
             if acc_data and acc_temp:
                 timestamp = str(datetime.datetime.now())
-                data_scheme = json.dumps({
+                data_scheme = {
                     "accx": {"value": acc_data['x'], "node": node, "timestamp": timestamp},
                     "accy": {"value": acc_data['y'], "node": node, "timestamp": timestamp},
                     "accz": {"value": acc_data['z'], "node": node, "timestamp": timestamp},
                     "sensorTemp": {"value": acc_temp, "node": node, "timestamp": timestamp},
-                })
+                }
                 try:
-                    myMQTTClient.publish(iot_topic, data_scheme, 1)
+                    myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1)
                 except:
                     #raise ComponentFailure('Could not publish', sensor, 'IMU')
                     print("There was a publish error IMU")
