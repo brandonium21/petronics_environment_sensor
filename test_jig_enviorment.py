@@ -21,7 +21,7 @@ import errortrack
 # Variables
 store_file = "results.txt"
 #store_path = "/media/pi/983F-EB83"
-store_path = "/Desktop"
+store_path = "/home/pi/Desktop"
 storage_location = "{}/{}".format(store_path, store_file)
 sensor = mpu6050(0x68)
 node = str(uuid.uuid4())
