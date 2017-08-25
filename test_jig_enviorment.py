@@ -54,6 +54,7 @@ def StoreData(data):
         with open(storage_location, 'w', newline='') as f:
 
             # Get Temp and humidity
+    pass
 
 
 def GetData(start):
