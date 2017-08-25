@@ -20,7 +20,7 @@ import errortrack
 
 # Variables
 store_file = "results.txt"
-#store_path = "/media/pi/983F-EB83"
+# store_path = "/media/pi/983F-EB83"
 store_path = "/home/pi/Desktop"
 storage_location = "{}/{}".format(store_path, store_file)
 sensor = mpu6050(0x68)
@@ -50,6 +50,14 @@ def connectAWS():
 
 
 def StoreData(data):
+    connectAWS()
+    try:
+        print(myMQTTClient.publish(
+            iot_topic, json.dumps(data), 1))
+    except:
+        # raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
+        print("There was a publish error HDT")
+        
     if os.path.isfile(storage_location):
         with open(storage_location, 'a') as f:
             json.dump(data, f)
@@ -61,7 +69,6 @@ def StoreData(data):
 
 
 def GetData(start):
-    connectAWS()
     while True:
         if start.value == True:
             humidity, temperature = Adafruit_DHT.read_retry(11, 22)
@@ -71,14 +78,15 @@ def GetData(start):
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
                 }
+                '''
                 try:
                     print(myMQTTClient.publish(
                         iot_topic, json.dumps(data_scheme), 1))
                 except:
-                    #raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
+                    # raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
                     print("There was a publish error HDT")
                     pass
-
+                '''
                 StoreData(data_scheme)
                 # print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
                 #    temperature, humidity))
@@ -87,7 +95,6 @@ def GetData(start):
 
 
 def GetIMU(start):
-    connectAWS()
     while True:
         if start.value == True:
             acc_data = sensor.get_accel_data()
@@ -100,13 +107,15 @@ def GetIMU(start):
                     "accz": {"value": acc_data['z'], "node": node, "timestamp": timestamp},
                     "sensorTemp": {"value": acc_temp, "node": node, "timestamp": timestamp},
                 }
+                '''
                 try:
                     print(myMQTTClient.publish(
                         iot_topic, json.dumps(data_scheme), 1))
                 except:
-                    #raise ComponentFailure('Could not publish', sensor, 'IMU')
+                    # raise ComponentFailure('Could not publish', sensor, 'IMU')
                     print("There was a publish error IMU")
                     pass
+                '''
                 StoreData(data_scheme)
                 # print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
                 #    acc_data['x'], acc_data['y'], acc_data['z']))
