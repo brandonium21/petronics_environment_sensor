@@ -68,15 +68,15 @@ def GetData(start):
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
                 }
                 try:
-                    myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1)
+                    print(myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1))
                 except:
                     #raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
                     print("There was a publish error HDT")
                     pass
 
                 StoreData(data_scheme)
-                print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
-                    temperature, humidity))
+                #print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
+                #    temperature, humidity))
 
 # Get IMU data
 
@@ -95,14 +95,14 @@ def GetIMU(start):
                     "sensorTemp": {"value": acc_temp, "node": node, "timestamp": timestamp},
                 }
                 try:
-                    myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1)
+                    print(myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1))
                 except:
                     #raise ComponentFailure('Could not publish', sensor, 'IMU')
                     print("There was a publish error IMU")
                     pass
                 StoreData(data_scheme)
-                print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
-                    acc_data['x'], acc_data['y'], acc_data['z']))
+                #print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
+                #    acc_data['x'], acc_data['y'], acc_data['z']))
 
 # Run data collection and website side-by-side
 if __name__ == "__main__":
