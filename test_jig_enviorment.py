@@ -42,7 +42,7 @@ myMQTTClient.configureOfflinePublishQueueing(-1)
 myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
 myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
-myMQTTClient.connect()
+
 
 # Store Data
 
@@ -50,8 +50,11 @@ myMQTTClient.connect()
 def StoreData(data):
     print data
     try:
+        myMQTTClient.connect()
         print(myMQTTClient.publish(
             iot_topic, json.dumps(data), 1))
+        
+        myMQTTClient.disconnect()
     except:
         # raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
         print("There was a publish error HDT")
