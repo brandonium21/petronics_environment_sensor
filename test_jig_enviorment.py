@@ -48,10 +48,10 @@ myMQTTClient.connect()
 
 def StoreData(data):
     if os.path.isfile(storage_location):
-        with open(storage_location, 'a', newline='') as f:
+        with open(storage_location, 'a') as f:
             json.dump(json.load(data), f)
     else:
-        with open(storage_location, 'w', newline='') as f:
+        with open(storage_location, 'w') as f:
             print("blah")
             # Get Temp and humidity
     pass
