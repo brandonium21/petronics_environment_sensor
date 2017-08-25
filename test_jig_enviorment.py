@@ -141,6 +141,6 @@ if __name__ == "__main__":
     p.join()
     q.join()
 
-    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGKILL, signal_handler)
     print('Press Ctrl+C')
     signal.pause()
