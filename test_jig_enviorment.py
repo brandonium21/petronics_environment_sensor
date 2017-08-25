@@ -16,7 +16,8 @@ import uuid
 import json
 from mpu6050 import mpu6050
 import errortrack
-
+import signal
+import sys
 
 # Variables
 store_file = "results.txt"
@@ -44,16 +45,19 @@ myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 
+def signal_handler(signal, frame):
+        print('You pressed Ctrl+C!')
+        run("killall Python")
+        sys.exit(0)
+
 # Store Data
-
-
 def StoreData(data):
     print data
     try:
         myMQTTClient.connect()
         print(myMQTTClient.publish(
             iot_topic, json.dumps(data), 1))
-        
+
         myMQTTClient.disconnect()
     except:
         # raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
@@ -76,6 +80,7 @@ def GetData(start):
             if humidity and temperature:
                 timestamp = str(datetime.datetime.now())
                 data_scheme = {
+                    "record": uuid.uuid4(),
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
                 }
@@ -103,6 +108,7 @@ def GetIMU(start):
             if acc_data and acc_temp:
                 timestamp = str(datetime.datetime.now())
                 data_scheme = {
+                    "record": uuid.uuid4(),
                     "accx": {"value": acc_data['x'], "node": node, "timestamp": timestamp},
                     "accy": {"value": acc_data['y'], "node": node, "timestamp": timestamp},
                     "accz": {"value": acc_data['z'], "node": node, "timestamp": timestamp},
@@ -130,3 +136,7 @@ if __name__ == "__main__":
     q.start()
     p.join()
     q.join()
+
+    signal.signal(signal.SIGINT, signal_handler)
+    print('Press Ctrl+C')
+    signal.pause()
