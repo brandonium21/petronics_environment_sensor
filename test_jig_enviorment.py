@@ -28,20 +28,23 @@ node = str(uuid.uuid4())
 iot_topic = "factory-node/{}".format(node)
 
 host = "a1la3qkft0cvmg.iot.us-east-2.amazonaws.com"
-myMQTTClient = AWSIoTMQTTClient("factory_sensor")
-myMQTTClient.configureEndpoint(host, 8883)
-myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt",
-                                  "mqtt_res2/factory_sensor.private.key",
-                                  "mqtt_res2/factory_sensor.cert.pem")
 
-# AWSIoTMQTTClient connection configuration
-myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
-# Infinite offline Publish queueing
-myMQTTClient.configureOfflinePublishQueueing(-1)
-myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
-myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
-myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
-myMQTTClient.connect()
+
+def connectAWS():
+    myMQTTClient = AWSIoTMQTTClient("factory_sensor")
+    myMQTTClient.configureEndpoint(host, 8883)
+    myMQTTClient.configureCredentials("mqtt_res2/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.crt",
+                                      "mqtt_res2/factory_sensor.private.key",
+                                      "mqtt_res2/factory_sensor.cert.pem")
+
+    # AWSIoTMQTTClient connection configuration
+    myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
+    # Infinite offline Publish queueing
+    myMQTTClient.configureOfflinePublishQueueing(-1)
+    myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
+    myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
+    myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
+    myMQTTClient.connect()
 
 # Store Data
 
@@ -58,6 +61,7 @@ def StoreData(data):
 
 
 def GetData(start):
+    connectAWS()
     while True:
         if start.value == True:
             humidity, temperature = Adafruit_DHT.read_retry(11, 22)
@@ -68,20 +72,22 @@ def GetData(start):
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
                 }
                 try:
-                    print(myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1))
+                    print(myMQTTClient.publish(
+                        iot_topic, json.dumps(data_scheme), 1))
                 except:
                     #raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
                     print("There was a publish error HDT")
                     pass
 
                 StoreData(data_scheme)
-                #print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
+                # print('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(
                 #    temperature, humidity))
 
 # Get IMU data
 
 
 def GetIMU(start):
+    connectAWS()
     while True:
         if start.value == True:
             acc_data = sensor.get_accel_data()
@@ -95,13 +101,14 @@ def GetIMU(start):
                     "sensorTemp": {"value": acc_temp, "node": node, "timestamp": timestamp},
                 }
                 try:
-                    print(myMQTTClient.publish(iot_topic, json.dumps(data_scheme), 1))
+                    print(myMQTTClient.publish(
+                        iot_topic, json.dumps(data_scheme), 1))
                 except:
                     #raise ComponentFailure('Could not publish', sensor, 'IMU')
                     print("There was a publish error IMU")
                     pass
                 StoreData(data_scheme)
-                #print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
+                # print('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(
                 #    acc_data['x'], acc_data['y'], acc_data['z']))
 
 # Run data collection and website side-by-side
