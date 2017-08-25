@@ -13,6 +13,7 @@ import ssl
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import time
 import uuid
+import subprocess
 import json
 from mpu6050 import mpu6050
 import errortrack
@@ -44,6 +45,8 @@ myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
 myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
+def run(cmdline):
+    subprocess.Popen(cmdline.split(' '), stdout=sys.stdout)
 
 def signal_handler(signal, frame):
         print('You pressed Ctrl+C!')
@@ -80,7 +83,7 @@ def GetData(start):
             if humidity and temperature:
                 timestamp = str(datetime.datetime.now())
                 data_scheme = {
-                    "record": uuid.uuid4(),
+                    "record": str(uuid.uuid4()),
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
                 }
@@ -108,7 +111,7 @@ def GetIMU(start):
             if acc_data and acc_temp:
                 timestamp = str(datetime.datetime.now())
                 data_scheme = {
-                    "record": uuid.uuid4(),
+                    "record": str(uuid.uuid4()),
                     "accx": {"value": acc_data['x'], "node": node, "timestamp": timestamp},
                     "accy": {"value": acc_data['y'], "node": node, "timestamp": timestamp},
                     "accz": {"value": acc_data['z'], "node": node, "timestamp": timestamp},
