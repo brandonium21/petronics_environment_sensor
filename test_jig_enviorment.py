@@ -52,7 +52,7 @@ def StoreData(data):
             json.dump(json.load(data), f)
     else:
         with open(storage_location, 'w', newline='') as f:
-
+            print("blah")
             # Get Temp and humidity
     pass
 
