@@ -62,7 +62,7 @@ def GetData(start):
         if start.value == True:
             humidity, temperature = Adafruit_DHT.read_retry(11, 22)
             if humidity and temperature:
-                timestamp = datetime.datetime.now()
+                timestamp = str(datetime.datetime.now())
                 data_scheme = json.dumps({
                     "temperature": {"value": temperature, "node": node, "timestamp": timestamp},
                     "humidity": {"value": humidity, "node": node, "timestamp": timestamp}
@@ -87,7 +87,7 @@ def GetIMU(start):
             acc_data = sensor.get_accel_data()
             acc_temp = sensor.get_temp()
             if acc_data and acc_temp:
-                timestamp = datetime.datetime.now()
+                timestamp = str(datetime.datetime.now())
                 data_scheme = json.dumps({
                     "accx": {"value": acc_data['x'], "node": node, "timestamp": timestamp},
                     "accy": {"value": acc_data['y'], "node": node, "timestamp": timestamp},
