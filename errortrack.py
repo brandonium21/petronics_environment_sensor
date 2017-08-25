@@ -3,7 +3,7 @@ import datetime
 import Adafruit_DHT
 from mpu6050 import mpu6050
 
-logfile = "/media/pi/983F-EB83/operationlog.log"
+logfile = "/Desktop/operationlog.log"
 logging.basicConfig(filename=logfile,level=logging.DEBUG)
 
 class ComponentFailure(Exception):
