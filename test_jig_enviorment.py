@@ -20,7 +20,8 @@ import errortrack
 
 # Variables
 store_file = "results.txt"
-store_path = "/media/pi/983F-EB83"
+#store_path = "/media/pi/983F-EB83"
+store_path = "/Desktop"
 storage_location = "{}/{}".format(store_path, store_file)
 sensor = mpu6050(0x68)
 node = str(uuid.uuid4())
@@ -63,7 +64,9 @@ def GetData(start):
                 try:
                     myMQTTClient.publish(iot_topic, data_scheme, 1)
                 except:
-                    raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
+                    #raise ComponentFailure('Could not publish', Adafruit_DHT, 'HDT22')
+                    print("There was a publish error HDT")
+                    pass
 
                 StoreData(data_scheme)
                 print ('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity))
@@ -85,8 +88,9 @@ def GetIMU(start):
                 try:
                     myMQTTClient.publish(iot_topic, data_scheme, 1)
                 except:
-                    raise ComponentFailure('Could not publish', sensor, 'IMU')
-
+                    #raise ComponentFailure('Could not publish', sensor, 'IMU')
+                    print("There was a publish error IMU")
+                    pass
                 StoreData(data_scheme)
                 print ('AccX: {0:0.2f} AccY: {1:0.2f} AccZ: {2:0.2f}'.format(acc_data['x'], acc_data['y'], acc_data['z']))
 
